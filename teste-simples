@@ -1,0 +1,37 @@
+import com.exemplo.model.Usuario;
+import com.exemplo.repository.UsuarioRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import static org.mockito.Mockito.*;
+
+class AuthServiceTest {
+
+    @Mock
+    private UsuarioRepository usuarioRepository;
+
+    @InjectMocks
+    private AuthService authService;
+
+    private Usuario usuario;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        usuario = new Usuario();
+        usuario.setUsername("usuarioTest");
+        usuario.setPassword("senha123");
+    }
+
+    @Test
+    void testSalvarUsuario() {
+        when(usuarioRepository.save(usuario)).thenReturn(usuario);
+
+        authService.salvar(usuario);
+
+        verify(usuarioRepository, times(1)).save(usuario);
+    }
+}
